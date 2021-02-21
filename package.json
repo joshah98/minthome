@@ -1,0 +1,22 @@
+{
+  "name": "awesome-flask-server",
+  "version": "1.0.0",
+  "description": "MINT home desktop app",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joshah98/minthome.git"
+  },
+  "author": "Josha H",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/joshah98/minthome/issues"
+  },
+  "homepage": "https://github.com/joshah98/minthome#readme",
+  "dependencies": {
+    "electron": "^11.2.3"
+  }
+}

@@ -14,5 +14,21 @@ def model_output():
 
 
 @app.route('/')
+def login():
+	return render_template('login.html')
+
+@app.route('/dataviz')
+def dataviz():
+	return render_template('dataviz.html')
+
+@app.route('/home')
 def index():
 	return render_template('index.html')
+
+@app.route('/train')
+def train():
+	return render_template('train.html')
+
+@app.route('/devices')
+def devices():
+	return render_template('devices.html')

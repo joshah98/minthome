@@ -1,0 +1,156 @@
+<head>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/series-label.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type=text/javascript>
+      $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    </script>
+    </head>
+    
+    <script type=text/javascript>
+      var timeout = 2000; // ms
+      var ch1 = [];
+      var ch2 = [];
+    
+      // Makes AJAX request to Flask server
+      function executeQuery() { 
+          $.get($SCRIPT_ROOT + '/_model_output', function(data) {
+            $("#model_output").text(data.result);
+          });
+          $.get($SCRIPT_ROOT + '/_model_data', function(data) {
+            $("#model_data").text(data.result);
+            
+            ch1 = (document.getElementById("ch1").checked || document.getElementById("all").checked) ? data.result[0] : 0;
+            ch2 = (document.getElementById("ch2").checked || document.getElementById("all").checked) ? data.result[1] : 0;
+            ch3 = (document.getElementById("ch3").checked || document.getElementById("all").checked) ? data.result[2] : 0;
+            ch4 = (document.getElementById("ch4").checked || document.getElementById("all").checked) ? data.result[3] : 0;
+            ch5 = (document.getElementById("ch5").checked || document.getElementById("all").checked) ? data.result[4] : 0;
+            ch6 = (document.getElementById("ch6").checked || document.getElementById("all").checked) ? data.result[5] : 0;
+            ch7 = (document.getElementById("ch7").checked || document.getElementById("all").checked) ? data.result[6] : 0;
+            ch8 = (document.getElementById("ch8").checked || document.getElementById("all").checked) ? data.result[7] : 0;
+          });
+      }
+    
+      function plotData() {
+        console.log(ch1.length);
+        Highcharts.chart('container', {
+    
+          title: {
+              text: 'Live Voltage Readings'
+          },
+    
+          yAxis: {
+              title: {
+                  text: 'Voltage'
+              }
+          },
+    
+          legend: {
+              layout: 'vertical',
+              align: 'right',
+              verticalAlign: 'middle'
+          },
+    
+          plotOptions: {
+              series: {
+                  label: {
+                      connectorAllowed: false
+                  }
+              }
+          },
+    
+          series: [{
+              name: 'Channel 1',
+              data: ch1
+          }, {
+              name: 'Channel 2',
+              data: ch2
+          }, {
+              name: 'Channel 3',
+              data: ch3
+          }, {
+              name: 'Channel 4',
+              data: ch4
+          }, {
+              name: 'Channel 5',
+              data: ch5
+          }, {
+              name: 'Channel 6',
+              data: ch6
+          }, {
+              name: 'Channel 7',
+              data: ch7
+          }, {
+              name: 'Channel 8',
+              data: ch8
+          }],
+    
+          responsive: {
+              rules: [{
+                  condition: {
+                      maxWidth: 500
+                  },
+                  chartOptions: {
+                      legend: {
+                          layout: 'horizontal',
+                          align: 'center',
+                          verticalAlign: 'bottom'
+                      }
+                  }
+              }]
+          }
+    
+        });
+      }
+    
+      $(function() {
+        setInterval(executeQuery, timeout);
+        setInterval(plotData, timeout);
+      });
+    </script>
+    
+    <body>
+      <h1>Flask Server for Reading ML Data</h1>
+      Model output: <span id="model_output"></span><br>
+      Model data: <span id="model_data"></span>
+    
+      <figure class="highcharts-figure">
+        <div id="container"></div>
+    </figure>
+
+    <div class="container">
+        <h2>Choose which channels to view:</h2>
+        <form>
+          <label class="checkbox-inline">
+            <input type="checkbox" id="all" value="" checked>All Channels
+          </label>
+          <label class="checkbox-inline">
+            <input type="checkbox" id="ch1" value="">Channel 1
+          </label>
+          <label class="checkbox-inline">
+            <input type="checkbox" id="ch2" value="">Channel 2
+          </label>
+          <label class="checkbox-inline">
+            <input type="checkbox" id="ch3" value="">Channel 3
+          </label>
+          <label class="checkbox-inline">
+            <input type="checkbox" id="ch4" value="">Channel 4
+          </label>
+          <label class="checkbox-inline">
+            <input type="checkbox" id="ch5" value="">Channel 5
+          </label>
+          <label class="checkbox-inline">
+            <input type="checkbox" id="ch6" value="">Channel 6
+          </label>
+          <label class="checkbox-inline">
+            <input type="checkbox" id="ch7" value="">Channel 7
+          </label>
+          <label class="checkbox-inline">
+            <input type="checkbox" id="ch8" value="">Channel 8
+          </label>
+        </form>
+    </div>
+    </body>

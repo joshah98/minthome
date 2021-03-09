@@ -1,13 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Device list</title>
-</head>
-<body>
-    <p><a>Add new bluetooth device</a></p>
-    <p>Show list of devices from DB here</p>
-</body>
-</html>
+<title>Device list</title>
+
+<form>
+    <button>Connect new device</button>
+</form>
+
+<script>
+    function isWebBLEAvailable() {
+        if (!navigator.bluetooth) {
+            console.log('BLE not available')
+            return false
+        }
+        console.log('Success')
+        return true
+    }
+
+    function getDeviceInfo() {
+        let options = {
+            acceptAllDevices: true
+        }
+
+        navigator.bluetooth.requestDevice(options).then(device => {
+            console.log('Name: ' + device.name)
+        }).catch( error => {
+            console.log('Error: ' + error)
+        })
+    }
+
+    document.querySelector('form').addEventListener('submit', function(event) {
+        event.stopPropagation()
+        event.preventDefault()
+
+        if(isWebBLEAvailable()) {
+            getDeviceInfo()
+        }
+    })
+</script>
